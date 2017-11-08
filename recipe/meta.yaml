@@ -1,4 +1,4 @@
-{% set version = '0.10.11' %}
+{% set version = '0.10.13' %}
 
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
@@ -9,47 +9,96 @@ package:
 
 source:
   fn: RMySQL_{{ version }}.tar.gz
-  url: https://cran.r-project.org/src/contrib/Archive/RMySQL/RMySQL_{{ version }}.tar.gz
-  sha256: da405e38d08bb728586c2b9c969f222b0b83fe1df33ad9308eba820b8f03ea88
+  url:
+    - https://cran.r-project.org/src/contrib/RMySQL_{{ version }}.tar.gz
+    - https://cran.r-project.org/src/contrib/Archive/RMySQL/RMySQL_{{ version }}.tar.gz
+  sha256: 02396db92a2fa3e25ba448f0ae0b8244ca6b92a277e4f7a1784c004da8c81bc8
+
+
+  # patches:
+   # List any patch files here
+   # - fix.patch
 
 build:
+  # If this is a new build for the same version, increment the build number.
   number: 0
-  skip: True  # [win]
 
-#
-# Windows build not currently working
-#
+  # This is required to make R link correctly on Linux.
+  rpaths:
+    - lib/R/lib/
+    - lib/
 
+# Suggests: testthat
 requirements:
   build:
     - r-base
-    - r-dbi
-    - posix                # [win]
-    - {{native}}toolchain  # [win]
-    - gcc                  # [not win]
-    - readline 6.2*        # [not win]
-    - mysql-connector-c    # [not win]
-    - icu 58*
+    - {{ compiler('c') }}        # [not win]
+    - {{native}}toolchain        # [win]
+    - {{posix}}filesystem        # [win]
+    - {{posix}}sed               # [win]
+    - {{posix}}grep              # [win]
+    - {{posix}}autoconf
+    - {{posix}}automake
+    - {{posix}}pkg-config
+    - {{posix}}make
+    - r-dbi >=0.4
+
   run:
     - r-base
-    - r-dbi
-    - libgcc               # [not win]
-    - readline 6.2*        # [not win]
-    - mysql-connector-c    # [not win]
-    - icu 58*
+    - {{native}}gcc-libs         # [win]
+    - r-dbi >=0.4
 
 test:
   commands:
-    - $R -e "library('RMySQL')"  # [not win]
+    # You can put additional test commands to be run here.
+    - $R -e "library('RMySQL')"           # [not win]
     - "\"%R%\" -e \"library('RMySQL')\""  # [win]
 
+  # You can also put a file called run_test.py, run_test.sh, or run_test.bat
+  # in the recipe that will be run at test time.
+
+  # requires:
+    # Put any additional test requirements here.
+
 about:
-  home: https://cran.r-project.org/web/packages/RMySQL/index.html
+  home: https://downloads.mariadb.org/connector-c/ (upstream)
   license: GPL-2
-  summary: "A 'DBI' interface to 'MySQL' / 'MariaDB'"
+  summary: 'A ''DBI'' interface to ''MySQL'' / ''MariaDB''. The ''RMySQL'' package contains an  old
+    implementation based on legacy code from S-PLUS which being phased out. A modern
+    ''MySQL'' client based on ''Rcpp'' is available from the ''RMariaDB'' package on
+    ''Github'': <https://github.com/rstats-db/RMariaDB>.'
+
+  license_family: GPL2
 
 extra:
   recipe-maintainers:
     - chambm
     - bgruening
     - johanneskoester
+    - mingwandroid
+
+# The original CRAN metadata for this package was:
+
+# Package: RMySQL
+# Version: 0.10.13
+# Title: Database Interface and 'MySQL' Driver for R
+# Description: A 'DBI' interface to 'MySQL' / 'MariaDB'. The 'RMySQL' package contains an  old implementation based on legacy code from S-PLUS which being phased out. A modern 'MySQL' client based on 'Rcpp' is available from the 'RMariaDB' package on 'Github': <https://github.com/rstats-db/RMariaDB>.
+# Authors@R: c(person("Jeroen", "Ooms", email = "jeroen@berkeley.edu", role = c("aut", "cre")), person("David", "James", role = "aut"), person("Saikat", "DebRoy", role = "aut"), person("Hadley", "Wickham", email = "hadley@rstudio.com", role = "aut"), person("Jeffrey", "Horner", role = "aut"), person("RStudio", role = "cph"))
+# Depends: R (>= 2.8.0), DBI (>= 0.4)
+# Imports: methods
+# License: GPL-2
+# URL: https://downloads.mariadb.org/connector-c/ (upstream)
+# BugReports: https://github.com/rstats-db/rmysql/issues
+# SystemRequirements: libmariadb-client-dev | libmariadb-client-lgpl-dev | libmysqlclient-dev (deb), mariadb-devel (rpm), mariadb | mysql-connector-c (brew), mysql56_dev (csw)
+# NeedsCompilation: yes
+# Collate: 'mysql.R' 'driver.R' 'connection.R' 'data-type.R' 'default.R' 'escaping.R' 'result.R' 'extension.R' 'is-valid.R' 'table.R' 'transaction.R'
+# Suggests: testthat
+# Packaged: 2017-08-14 16:00:27 UTC; jeroen
+# Author: Jeroen Ooms [aut, cre], David James [aut], Saikat DebRoy [aut], Hadley Wickham [aut], Jeffrey Horner [aut], RStudio [cph]
+# Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
+# Repository: CRAN
+# Date/Publication: 2017-08-14 18:34:42 UTC
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
