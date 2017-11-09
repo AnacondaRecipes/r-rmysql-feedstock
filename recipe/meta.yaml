@@ -34,6 +34,7 @@ requirements:
     - r-base
     - {{ compiler('c') }}        # [not win]
     - {{native}}toolchain        # [win]
+    - {{native}}mysql
     - {{posix}}filesystem        # [win]
     - {{posix}}sed               # [win]
     - {{posix}}grep              # [win]
@@ -46,6 +47,7 @@ requirements:
   run:
     - r-base
     - {{native}}gcc-libs         # [win]
+    - {{native}}mysql
     - r-dbi >=0.4
 
 test:
