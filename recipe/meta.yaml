@@ -34,21 +34,22 @@ requirements:
     - r-base
     - {{ compiler('c') }}        # [not win]
     - {{native}}toolchain        # [win]
-    - {{native}}mysql
     - {{posix}}filesystem        # [win]
     - {{posix}}sed               # [win]
     - {{posix}}grep              # [win]
     - {{posix}}autoconf
-    - {{posix}}automake
+    - {{posix}}automake-wrapper  # [win]
+    - {{posix}}automake          # [not win]
     - {{posix}}pkg-config
     - {{posix}}make
     - r-dbi >=0.4
+    - {{native}}mysql
 
   run:
     - r-base
     - {{native}}gcc-libs         # [win]
-    - {{native}}mysql
     - r-dbi >=0.4
+    - {{native}}mysql
 
 test:
   commands:
