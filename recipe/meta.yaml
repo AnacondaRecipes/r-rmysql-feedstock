@@ -1,4 +1,4 @@
-{% set version = '0.10.14' %}
+{% set version = '0.10.15' %}
 
 {% set posix = 'm2-' if win else '' %}
 {% set native = 'm2w64-' if win else '' %}
@@ -8,11 +8,10 @@ package:
   version: {{ version|replace("-", "_") }}
 
 source:
-  fn: RMySQL_{{ version }}.tar.gz
   url:
     - {{ cran_mirror }}/src/contrib/RMySQL_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/RMySQL/RMySQL_{{ version }}.tar.gz
-  sha256: 2095aa0a9aa9fbf4dad978e105423dafab62dff0f7b5a68c17600d23ec0c0905
+  sha256: 7610de7ebc4c7739bf07af2b575faa620c1fa786803d3dc6704a4eeb0a3fac2e
 
 build:
   skip: True  # [win]
@@ -34,10 +33,12 @@ requirements:
     - {{posix}}sed               # [win]
     - {{posix}}grep              # [win]
     - {{posix}}autoconf
-    - {{posix}}automake-wrapper  # [win]
     - {{posix}}automake          # [not win]
+    - {{posix}}automake-wrapper  # [win]
     - {{posix}}pkg-config
     - {{posix}}make
+    - {{posix}}coreutils         # [win]
+    - {{posix}}zip               # [win]
 
   host:
     - r-base
@@ -65,9 +66,8 @@ test:
 about:
   home: https://downloads.mariadb.org/connector-c/ (upstream)
   license: GPL-2
-  summary: A 'DBI' interface to 'MySQL' / 'MariaDB'. The 'RMySQL' package contains an  old implementation
-    based on legacy code from S-PLUS which being phased out. A modern 'MySQL' client
-    based on 'Rcpp' is available from the 'RMariaDB' package.
+  summary: Legacy 'DBI' interface to 'MySQL' / 'MariaDB' based on old code ported from S-PLUS.
+    A modern 'MySQL' client based on 'Rcpp' is available  from the 'RMariaDB' package.
   license_family: GPL2
 
 extra:
@@ -80,10 +80,10 @@ extra:
 # The original CRAN metadata for this package was:
 
 # Package: RMySQL
-# Version: 0.10.14
+# Version: 0.10.15
 # Title: Database Interface and 'MySQL' Driver for R
-# Description: A 'DBI' interface to 'MySQL' / 'MariaDB'. The 'RMySQL' package contains an  old implementation based on legacy code from S-PLUS which being phased out. A modern 'MySQL' client based on 'Rcpp' is available from the 'RMariaDB' package.
-# Authors@R: c(person("Jeroen", "Ooms", email = "jeroen@berkeley.edu", role = c("aut", "cre")), person("David", "James", role = "aut"), person("Saikat", "DebRoy", role = "aut"), person("Hadley", "Wickham", email = "hadley@rstudio.com", role = "aut"), person("Jeffrey", "Horner", role = "aut"), person("RStudio", role = "cph"))
+# Description: Legacy 'DBI' interface to 'MySQL' / 'MariaDB' based on old code ported from S-PLUS. A modern 'MySQL' client based on 'Rcpp' is available  from the 'RMariaDB' package.
+# Authors@R: c(person("Jeroen", "Ooms", email = "jeroen@berkeley.edu",  role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4035-0289")), person("David", "James", role = "aut"), person("Saikat", "DebRoy", role = "aut"), person("Hadley", "Wickham", email = "hadley@rstudio.com", role = "aut"), person("Jeffrey", "Horner", role = "aut"), person("RStudio", role = "cph"))
 # Depends: R (>= 2.8.0), DBI (>= 0.4)
 # Imports: methods
 # License: GPL-2
@@ -93,11 +93,11 @@ extra:
 # NeedsCompilation: yes
 # Collate: 'mysql.R' 'driver.R' 'connection.R' 'data-type.R' 'default.R' 'escaping.R' 'result.R' 'extension.R' 'is-valid.R' 'table.R' 'transaction.R'
 # Suggests: testthat, curl
-# Packaged: 2018-02-26 12:50:13 UTC; jeroen
-# Author: Jeroen Ooms [aut, cre], David James [aut], Saikat DebRoy [aut], Hadley Wickham [aut], Jeffrey Horner [aut], RStudio [cph]
+# Packaged: 2018-05-13 17:23:38 UTC; jeroen
+# Author: Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>), David James [aut], Saikat DebRoy [aut], Hadley Wickham [aut], Jeffrey Horner [aut], RStudio [cph]
 # Maintainer: Jeroen Ooms <jeroen@berkeley.edu>
 # Repository: CRAN
-# Date/Publication: 2018-02-26 17:17:09 UTC
+# Date/Publication: 2018-05-13 19:33:05 UTC
 
 # See
 # http://docs.continuum.io/conda/build.html for
