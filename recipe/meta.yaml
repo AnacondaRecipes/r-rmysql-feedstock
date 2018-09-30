@@ -43,13 +43,13 @@ requirements:
   host:
     - r-base
     - r-dbi >=0.4
-    - {{native}}mysql
+    - {{native}}mysql            # [not win]
 
   run:
     - r-base
     - {{native}}gcc-libs         # [win]
     - r-dbi >=0.4
-    - {{native}}mysql
+    - {{native}}mysql            # [not win]
 
 test:
   commands:
