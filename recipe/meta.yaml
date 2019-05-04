@@ -11,7 +11,7 @@ source:
   url:
     - {{ cran_mirror }}/src/contrib/RMySQL_{{ version }}.tar.gz
     - {{ cran_mirror }}/src/contrib/Archive/RMySQL/RMySQL_{{ version }}.tar.gz
-  sha256: 754df4fce159078c1682ef34fc96aa5ae30981dc91f4f2bada8d1018537255f5
+  sha256: 7610de7ebc4c7739bf07af2b575faa620c1fa786803d3dc6704a4eeb0a3fac2e
 
 build:
   skip: True  # [win]
